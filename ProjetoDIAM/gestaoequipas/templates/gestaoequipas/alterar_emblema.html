@@ -1,0 +1,33 @@
+{% extends "./index.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="centered_container">
+        {% if uploaded_file_url %}
+            <h1>Novo emblema:</h1>
+            <br>
+            <img class="profile_image" style="margin-bottom: 20px;height: 200px" src="{% static 'gestaoequipas/images/' %}{{ equipa.emblema_clube }}"
+                 alt="emblema do clube">
+        {% else %}
+            <h1>Emblema da Equipa: </h1>
+            {% if equipa.emblema_clube %}
+                <img class="profile_image" src="{% static 'gestaoequipas/images/' %}{{ equipa.emblema_clube }}" alt="emblema do clube">
+            {% endif %}
+        {% endif %}
+
+        {% if error_message %}
+            <p><strong style="color: red">{{ error_message }}</strong></p>
+        {% endif %}
+
+        <form id="avatar_form" method="post" enctype="multipart/form-data" action="{% url 'gestaoequipas:alterar_emblema' equipa.id %}">
+            {% csrf_token %}
+            <input type="file" name="myfile">
+            <br>
+            <input style="background: #0aaa04" type="submit" value="Upload">
+        </form>
+        <a class="button_format grey_button" style="margin-top: 15px" href="{% url 'gestaoequipas:info_equipa' %}">
+            Voltar
+        </a>
+
+    </div>
+{% endblock %}

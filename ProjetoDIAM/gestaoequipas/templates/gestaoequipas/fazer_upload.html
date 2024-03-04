@@ -1,0 +1,37 @@
+{% extends "./index.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="centered_container">
+        {% if uploaded_file_url %}
+            <h1>Nova foto de perfil:</h1>
+            <br>
+            <img class="profile_image" style="margin-bottom: 20px;height: 200px" src="{% static 'gestaoequipas/images/' %}{{ uploaded_file_url }}"
+                 alt="imagem de perfil">
+        {% else %}
+            <h1>A sua foto de perfil: </h1>
+            {% if user.atleta.foto_perfil %}
+                <img class="profile_image" src="{% static 'gestaoequipas/images/' %}{{ user.atleta.foto_perfil }}" alt="imagem de perfil">
+            {% elif user.treinador.foto_perfil %}
+                <img class="profile_image" style="height: 200px" src="{% static 'gestaoequipas/images/' %}{{ user.treinador.foto_perfil }}"
+                     alt="imagem de perfil">
+            {% else %}
+                <img class="profile_image" style="height: 200px" src="{% static 'gestaoequipas/images/default.png' %}" alt="imagem de perfil">
+            {% endif %}
+        {% endif %}
+
+        {% if error_message %}
+            <p><strong style="color: red">{{ error_message }}</strong></p>
+        {% endif %}
+
+        <form id="avatar_form" method="post" enctype="multipart/form-data" action="{% url 'gestaoequipas:fazer_upload' %}">
+            {% csrf_token %}
+            <input type="file" name="myfile">
+            <br>
+            <input style="background: #0aaa04" type="submit" value="Upload">
+        </form>
+        <a class="button_format grey_button" style="margin-top: 15px" href="{% url 'gestaoequipas:perfil' %}">
+            Voltar
+        </a>
+    </div>
+{% endblock %}

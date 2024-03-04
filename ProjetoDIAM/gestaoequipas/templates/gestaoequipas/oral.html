@@ -1,0 +1,7 @@
+{% extends "./index.html" %}
+{% load static %}
+
+{% block content %}
+
+Olá, eu sou o {{ request.user.first_name }} {{ request.user.last_name }}
+{% endblock %}

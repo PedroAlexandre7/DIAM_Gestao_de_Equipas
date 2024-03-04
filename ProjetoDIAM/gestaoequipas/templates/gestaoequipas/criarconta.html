@@ -1,0 +1,53 @@
+{% extends "./index.html" %}
+{% load static %}
+
+{% block title %}<title>Criar Conta</title>{% endblock %}
+
+{% block navbar %}
+    <a class="nav_options" href="{% url 'gestaoequipas:index' %}"> Home </a>
+    <a class="nav_options" href="{% url 'gestaoequipas:loginpage' %}"> Login </a>
+    <a id="active" class="nav_options" href="{% url 'gestaoequipas:criarconta' %}"> Sign Up </a>
+{% endblock %}
+
+{% block content %}
+
+
+    <div class="centered_container">
+        <h1> Criar Conta </h1>
+
+        {% if mensagem_de_erro %}
+            <p><strong style="color: red">{{ mensagem_de_erro }}</strong></p>
+        {% endif %}
+
+        <form action="{% url 'gestaoequipas:criarconta' %}" method="post">
+            {% csrf_token %}
+            <label>Primeiro Nome:</label>&nbsp;<input type="text" placeholder="Primeiro Nome" name="primeiro_nome" >
+            <br>
+            <label>Ultimo Nome:</label>&nbsp;<input type="text" placeholder="Ultimo Nome" name="ultimo_nome" >
+            <br>
+            <label>Username:</label>&nbsp;<input type="text" placeholder="Username" name="username" required>
+            <br>
+            <label>E-mail:</label>&nbsp;<input type="email" placeholder="Email" name="mail_utilizador" >
+            <br>
+            <label>Palavra-Passe:</label>&nbsp;<input type="password" placeholder="Password" name="pass_utilizador" required>
+            <br>
+            <label>Confirme a palavra-Passe:</label>&nbsp;<input type="password" placeholder="Password" name="pass_utilizador_conf" >
+            <br>
+            <label for="utilizador">Tipo de conta:</label>&nbsp;
+            <select id="utilizador" name="tipo_utilizador" required>
+                <option value="atleta">Atleta</option>
+                <option value="treinador">Treinador</option>
+            </select>
+            <br>
+            <input type="submit" value="Criar Conta">
+            <br>
+        </form>
+
+        <a class="button_format grey_button" style="margin-top: 15px;" href="{% url 'gestaoequipas:index' %}">
+            Voltar
+        </a>
+    </div>
+
+
+
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "./index.html" %}
+{% load static %}
+{% block content %}
+    <div class="centered_container">
+        <h1>Nova Equipa</h1>
+        <br>
+        <form action="{% url 'gestaoequipas:criarequipa' %}" method="post">
+            {% csrf_token %}
+            <label>Nome Equipa:</label>&nbsp;<input type="text" placeholder="Nome da Equipa" name="nome_equipa" required>
+            <br>
+            <label>Sigla:</label>&nbsp;<input type="text" placeholder="Sigla da Equipa" name="sigla_equipa" required>
+            <br>
+            <br>
+            <input style="background: #0aaa04" type="submit" value="Guardar Equipa">
+        </form>
+        <br>
+        <a class="button_format grey_button" style="margin-top: 15px" href="{% url 'gestaoequipas:index' %}">
+            Voltar
+        </a>
+    </div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "./index.html" %}
+{% load static %}
+{% block navbar %}
+    <a class="nav_options" href="{% url 'gestaoequipas:index' %}"> Home </a>
+    <a id="active" class="nav_options" href="{% url 'gestaoequipas:loginpage' %}"> Login </a>
+    <a class="nav_options" href="{% url 'gestaoequipas:criarconta' %}"> Sign Up </a>
+{% endblock %}
+{% block content %}
+    <div class="centered_container">
+        <h1 id="login_header"> Login </h1>
+        {% if error_message %}
+            <p style="color: red"> {{ error_message }}</p>
+        {% endif %}
+        <form action="{% url 'gestaoequipas:loginpage' %}" method="post">
+            {% csrf_token %}
+            <input type="text" placeholder="Username" name="username">
+            <br>
+            <input type="password" placeholder="Password" name="pass_utilizador">
+            <br>
+            <input type="submit" value="Login">
+            <br>
+        </form>
+        <a class="button_format grey_button" style="margin-top: 15px" href="{% url 'gestaoequipas:index' %}">
+            Voltar
+        </a>
+    </div>
+{% endblock %}

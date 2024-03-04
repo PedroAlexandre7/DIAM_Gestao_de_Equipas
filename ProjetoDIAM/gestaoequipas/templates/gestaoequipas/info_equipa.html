@@ -1,0 +1,33 @@
+{% extends './index.html' %}
+{% load static %}
+{% block content %}
+<div class="centered_container">
+    <h1> {{ equipa.nome_equipa }}</h1>
+    {% if equipa.emblema_clube %}
+        <img class="profile_image" src="{% static 'gestaoequipas/images/' %}{{ equipa.emblema_clube }}" alt="emblema da equipa">
+    {% endif %}
+    <h3>Treinador da equipa</h3>
+        <p>{{ equipa.treinador.user.first_name }} {{ equipa.treinador.user.last_name }}</p>
+    <h3>Atletas da equipa</h3>
+    <ul style="display: inline-block">
+        {% for atleta in atletas %}
+            <li style="width: auto; text-align:left"> {{ atleta.user.username }}</li>
+        {% endfor %}
+    </ul>
+    <br>
+    {% if request.user.treinador.equipa == equipa %}
+        <a class="button_format" style="margin-top: 15px;" href="{% url 'gestaoequipas:alterar_emblema' equipa.id %}">
+        Alterar Emblema
+        </a>
+        <form action="{% url 'gestaoequipas:info_equipa' %}" method="post" >
+            <input type="hidden" name="equipa_id" value="{{equipa.id}}">
+            <a class="button_format red_button" style="margin-top: 15px" href="{% url 'gestaoequipas:info_equipa' %}">
+                APAGAR EQUIPA
+            </a>
+        </form>
+    {% endif %}
+<a class="button_format grey_button" style="margin-top: 25px;" href="{% url 'gestaoequipas:index' %}">
+        Voltar
+    </a>
+</div>
+{% endblock %}

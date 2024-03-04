@@ -1,0 +1,38 @@
+{% extends './index.html' %}
+{% block content %}
+<div class="centered_container">
+    <h1>Equipa atual</h1>
+    {% if user.atleta.equipa %}
+        <h4>{{ user.atleta.equipa.nome_equipa }}</h4>
+    {% elif user.treinador.equipa %}
+        <h4>{{ user.treinador.equipa.nome_equipa }}</h4>
+    {% else %}
+        <p>Não pertences a nenhuma equipa no momento</p>
+    {% endif %}
+    <br>
+    <h3>Entrar numa nova equipa</h3>
+    {% if mensagem_de_erro %}
+    <p><strong style="color: red">{{ mensagem_de_erro }}</strong></p>
+    {% endif %}
+    <form action="{% url 'gestaoequipas:editar_perfil' %}" method="post">
+        {% csrf_token %}
+        <label for="equipas">Selecionar Equipa:</label>
+        <select name="equipa" id="equipas" required>
+            {% for equipa in equipas %}
+            <option value="{{ equipa.id }}"> {{ equipa.nome_equipa }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <input type="submit" value="Entrar na equipa">
+    </form>
+    <br>
+<h3 style="margin-top: 25px">Sair da Equipa</h3>
+    <a class="button_format red_button" style="margin-top: 5px" href="{% url 'gestaoequipas:sair_equipa' %}">
+        Sair da Equipa Atual
+    </a>
+    <br>
+    <a class="button_format grey_button" style="margin-top: 25px" href="{% url 'gestaoequipas:perfil' %}">
+        Voltar
+    </a>
+</div>
+{% endblock %}

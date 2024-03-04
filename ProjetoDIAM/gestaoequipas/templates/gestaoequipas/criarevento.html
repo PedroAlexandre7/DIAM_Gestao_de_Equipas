@@ -1,0 +1,31 @@
+{% extends "./index.html" %}
+{% load static %}
+{% block content %}
+    <div class="centered_container">
+        <h1>Novo Evento</h1>
+        <br>
+        <form action="{% url 'gestaoequipas:criarevento' %}" method="post">
+            {% csrf_token %}
+            <label>Tipo Evento:</label>&nbsp;<input type="text" placeholder="Tipo de Evento" name="tipo_evento" required>
+            <br>
+            <label>Data/Hora:</label>&nbsp;<input type="datetime-local" placeholder="Data/Hora Evento" name="data_evento" required>
+            <br>
+            <label>Local:</label>&nbsp;<input type="text" placeholder="Local do Evento" name="local_evento" required>
+            <br>
+            <label>Descrição:</label>&nbsp;<input type="text" placeholder="Descricao do Evento" name="descricao_evento" required>
+            <br>
+            <label for="equipas">Selecionar Equipas:</label>
+            <select style="height: 100px; width: 209px" name="equipas" id="equipas" multiple required>
+                {% for equipa in equipas %}
+                    <option value="{{ equipa.id }}"> {{ equipa.nome_equipa }}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <input type="submit" value="Criar Evento">
+        </form>
+        <br>
+        <a class="button_format grey_button" style="margin-top: 15px" href="{% url 'gestaoequipas:index' %}">
+            Voltar
+        </a>
+    </div>
+{% endblock %}

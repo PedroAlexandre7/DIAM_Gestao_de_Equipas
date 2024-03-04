@@ -1,0 +1,53 @@
+{% extends "./index.html" %}
+{% load static %}
+
+{% block content %}
+<div class="centered_container">
+    <h1 id="ns"> Info Utilizador </h1>
+    <br>
+    {% if user.atleta.foto_perfil %}
+    <img class="profile_image" src="{% static 'gestaoequipas/images/' %}{{ user.atleta.foto_perfil }}"
+         alt="imagem de perfil">
+    {% elif user.treinador.foto_perfil %}
+    <img class="profile_image" src="{% static 'gestaoequipas/images/' %}{{ user.treinador.foto_perfil }}"
+         alt="imagem de perfil">
+    {% else %}
+    <img class="profile_image" src="{% static 'gestaoequipas/images/default.png' %}" alt="imagem de perfil">
+{% endif %}
+
+    <div id="profile_info" style="margin-top:10px">
+        <p>
+            {% if user.atleta %}
+            <strong> Atleta: </strong>
+            {% else %}
+            <strong> Treinador: </strong>
+            {% endif %}
+            {{ request.user.first_name }} {{ request.user.last_name }}
+        </p>
+        <p><strong> Username: </strong> {{ request.user.username }}</p>
+        <p><strong> E-Mail: </strong> {{ request.user.email }}</p>
+
+        {% if user.atleta %}
+        <p><strong> Equipa: </strong>{{ request.user.atleta.equipa.nome_equipa }}</p>
+        {% elif user.treinador %}
+        <p><strong> Equipa: </strong>{{ request.user.treinador.equipa.nome_equipa }}</p>
+        {% endif %}
+
+    </div>
+    <a class="button_format" style="margin-top: 15px;" href="{% url 'gestaoequipas:fazer_upload' %}">
+        Alterar foto
+    </a>
+    <a class="button_format" href="{% url 'gestaoequipas:editar_perfil' %}">
+        Opções de Equipa
+    </a>
+    <br>
+    <a class="button_format red_button" href="{% url 'gestaoequipas:apagar_perfil' %}">
+        Apagar perfil
+    </a>
+    <br>
+
+    <a class="button_format grey_button" style="margin-top: 25px;" href="{% url 'gestaoequipas:index' %}">
+        Voltar
+    </a>
+</div>
+{% endblock %}

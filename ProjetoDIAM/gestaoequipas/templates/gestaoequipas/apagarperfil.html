@@ -1,0 +1,13 @@
+{% extends 'gestaoequipas/index.html' %}
+{% block content %}
+
+<div class="centered_container">
+<h2>Confirmar apagar</h2>
+<p>Tens a certeza que queres apagar este prefil?</p>
+<br>
+  <form action="{% url 'gestaoequipas:apagar_perfil' %}" method="post" >
+    {% csrf_token %}
+    <button type="submit">Delete Profile</button>
+  </form>
+</div>
+{% endblock %}

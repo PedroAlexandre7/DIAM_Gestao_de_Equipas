@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block title %}<title>Gestor de equipas</title>{% endblock %}
+    {% load static %}
+    <link rel="shortcut icon" href="{% static 'gestaoequipas/images/favicon.ico' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'gestaoequipas/style/style.css' %}"/>
+</head>
+<body>
+<header>
+    <div id="banner"></div>
+        <nav id="pages">
+            {% block navbar %}
+                <a id="active" class="nav_options" href="{% url 'gestaoequipas:index' %}"> Home </a>
+                {% if not user.is_authenticated %}
+                    <a class="nav_options" href="{% url 'gestaoequipas:loginpage' %}"> Login </a>
+                    <a class="nav_options" href="{% url 'gestaoequipas:criarconta' %}"> Sign Up </a>
+                {% else %}
+                    {% if request.user.treinador.equipa == null %}
+                        <a class="nav_options" href="{% url 'gestaoequipas:criarequipa' %}">Criar Equipa</a>
+                    {% endif %}
+                        <a class="nav_options" href="{% url 'gestaoequipas:perfil' %}">Perfil</a>
+                        <a class="nav_options" href="{% url 'gestaoequipas:info_equipa' %}">Equipa</a>
+                        <a class="nav_options" href="{% url 'gestaoequipas:logout' %}">Logout</a>
+                        <a class="nav_options" href="{% url 'gestaoequipas:oral' %}">Oral</a>
+                        {% if not user.is_superuser %}
+                            {% if user.atleta.foto_perfil %}
+                                <img style="border-radius: 100px; object-fit: cover;" class="logged_user" src="{% static 'gestaoequipas/images/' %}{{ request.user.atleta.foto_perfil }}" width="40" height="40" >
+                            {% endif %}
+                            {% if user.treinador.foto_perfil %}
+                                <img style="border-radius: 100px; object-fit: cover;" class="logged_user" src="{% static 'gestaoequipas/images/' %}{{ request.user.treinador.foto_perfil }}" width="40" height="40">
+                            {% endif %}
+                        {% endif %}
+                {% endif %}
+            {% endblock %}
+        </nav>
+</header>
+<main id="margin_content">
+    {% block content %}
+        <section id="eventos">
+            <div id="options">
+                {% if request.user.treinador %}
+                    <a class="button_format modevent" href="{% url 'gestaoequipas:criarevento' %}">
+                        Adicionar Evento
+                    </a>
+                {% endif %}
+
+                <form method="get" action="">
+                    <button type="submit" class="navigation grey_button" name="day" value="{{ next_month }}"> ></button>
+                </form>
+                <form method="get" action="">
+                    <button type="submit" class="navigation grey_button" name="day" value="{{ previous_month }}"> <</button>
+                </form>
+            </div>
+            <div id="calendario">
+                {{ calendar }}
+            </div>
+        </section>
+        <section>
+            <aside id="noticias">
+                <h3 style="text-align: center"> Noticias </h3>
+                <h4>Banana à solta no zoo, cientistas estão preocupados</h4>
+                É o segundo dia desde que a banana estrangeira entrou por cima do muro para dentro do zoo
+                Há especialistas e primatas preocupados com o desenvolvimento da situação<br>
+                PJ e guarda nacional aguardam resposta do pentágono...
+            </aside>
+        </section>
+    {% endblock %}
+</main>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script src="{% static 'gestaoequipas/scripts/script.js' %}"></script>
+</body>
+</html>

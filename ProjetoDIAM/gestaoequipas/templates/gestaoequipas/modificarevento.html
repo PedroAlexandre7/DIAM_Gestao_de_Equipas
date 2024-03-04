@@ -1,0 +1,61 @@
+{% extends "./index.html" %}
+{% load static %}
+
+{% block content %}
+<div class="centered_container">
+    <h1>{{ evento.tipo_evento }}</h1>
+    {% if error_message %}
+        <p><strong>{{ error_message }}</strong></p>
+    {% endif %}
+    <p><strong> Descrição: </strong> {{ evento.descricao_evento }}</p>
+    <p><strong> Data Evento: </strong> {{ evento.data_evento }}</p>
+    <p><strong> Local Evento: </strong> {{ evento.local_evento }}</p>
+    <p><strong> Equipas inscritas: </strong>
+        <br>
+    <ul style="list-style: none;">
+        {% for equipa in equipas %}
+            <li>
+                {{ equipa.nome_equipa }}
+            </li>
+        {% endfor %}
+    </ul>
+
+    {% if perms.gestaoequipas.read_write_confirmar_presenca and user.atleta.equipa in equipas %}
+    <h3>Confirma a tua presença no evento</h3>
+    {% if mensagem_de_erro %}
+    <p><strong style="color: red">{{ mensagem_de_erro }}</strong></p>
+    {% endif %}
+        <form action="{% url 'gestaoequipas:modificarevento' evento.id %}" method="post">
+            {% csrf_token %}
+            {% for resposta in respostas_possiveis %}
+                <input type="radio" name="resposta" id="{{resposta.id}}" value="{{ resposta.id }}"/>
+                <label style="text-align: center; width: 95px;" for="{{resposta.id}}"> {{ resposta.respostaPossivel }} </label>
+                <br>
+            {% endfor %}
+            <br>
+            <input type="submit" value="Guardar"/>
+        </form>
+    {% endif %}
+
+    <h3>
+        Atletas confirmados
+    </h3>
+    <ul style="list-style: none;">
+    {% for atleta in atletas_confirmados %}
+        <li>
+            <p> {{ atleta.user.first_name }}  {{ atleta.user.last_name }}</p>
+        </li>
+    {% endfor %}
+    </ul>
+
+    {% if perms.gestaoequipas.write_delete_alocacao_eventos and user.treinador.equipa in equipas %}
+        <a class="button_format red_button" style="margin-top: 15px" href="{% url 'gestaoequipas:apagar_evento' evento.id %}">
+            APAGAR EVENTO
+        </a>
+    {% endif %}
+    <a class="button_format grey_button" style="margin-top: 15px" href="{% url 'gestaoequipas:index' %}">
+        Voltar
+    </a>
+
+</div>
+{% endblock %}
